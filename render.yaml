@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: loomcare-v1-prototype
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 30 app:app
+    healthCheckPath: /healthz
+    autoDeploy: false
+    disk:
+      name: care-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: LOOMCARE_DATA_DIR
+        value: /var/data
+      - key: LOOMCARE_SECRET_KEY
+        generateValue: true
+      - key: LOOMCARE_SECURE_COOKIES
+        value: "1"
+      - key: LOOMCARE_ENABLE_SMTP
+        value: "0"

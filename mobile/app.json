@@ -1,0 +1,70 @@
+{
+  "expo": {
+    "name": "LOOMCARE",
+    "slug": "loomcare",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "loomcare",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.loomcare.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["bluetooth-central", "remote-notification"]
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.loomcare.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#164B42",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "color": "#164B42"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "LOOMCARE uses the camera only to scan the pairing QR code for a parent's pendant.",
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": true
+        }
+      ],
+      [
+        "react-native-ble-manager",
+        {
+          "isBleRequired": false,
+          "neverForLocation": true,
+          "companionDeviceEnabled": false,
+          "bluetoothAlwaysPermission": "LOOMCARE connects to your parent's pendant over Bluetooth so alerts reach the family."
+        }
+      ],
+      "./plugins/withGatewayService.js"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "apiUrl": "https://loomcare.example.com"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">LOOMCARE connectivity architecture</title><desc id="desc">The pendant works locally first and relays events over Bluetooth to either the parent's phone app or a mains-powered home hub with Wi-Fi and optional LTE backup. The cloud deduplicates events from any gateway, supervises heartbeats and escalates through push, SMS and voice calls to family and the care team.</desc>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#237b6a"/></marker><marker id="d" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#946222"/></marker><style>text{font-family:Arial,sans-serif;fill:#233d36;font-size:13px}.title{font-size:26px;font-weight:bold}.h{font-size:16px;font-weight:bold}.s{font-size:11px;fill:#607268}.box{fill:#f6f8f1;stroke:#b9cab5;stroke-width:1.5}.core{fill:#e5eedb;stroke:#4f7a63;stroke-width:2}.new{fill:#fff;stroke:#946222;stroke-width:2;stroke-dasharray:7 4}.sig{fill:none;stroke:#237b6a;stroke-width:2.2}.alt{fill:none;stroke:#946222;stroke-width:2.2;stroke-dasharray:7 4}.tag{fill:#164b42}.tagt{fill:#fff;font-size:11px;font-weight:bold}.note{fill:#fff4df;stroke:#dcc89e}</style></defs>
+<rect width="1200" height="760" fill="#fff"/>
+<text x="36" y="44" class="title">Solving connectivity: local-first, two gateways, supervised cloud</text>
+<text x="36" y="68" class="s">Solid = available in the prototype design today • dashed = recommended additions • any gateway can relay; the cloud keeps exactly one incident per pendant event</text>
+
+<rect x="36" y="110" width="250" height="330" rx="14" class="core"/><rect x="52" y="124" width="26" height="20" rx="4" class="tag"/><text x="58" y="138" class="tagt">L1</text><text x="88" y="140" class="h">Pendant (local-first)</text>
+<text x="52" y="170">Fall detection on the pendant</text><text x="52" y="192">Local alarm + 15 s cancel</text><text x="52" y="214">SOS without any network</text><text x="52" y="236">Reminders from stored schedule</text><text x="52" y="258">Events kept until cloud-acked</text><text x="52" y="280">Bonds with up to 2 gateways</text>
+<rect x="52" y="298" width="26" height="20" rx="4" class="tag"/><text x="58" y="312" class="tagt">L2</text><text x="88" y="313" class="h">Robust BLE link</text>
+<text x="52" y="340" class="s">Slow 1 s connection when idle (low power)</text><text x="52" y="358" class="s">Fast advertising burst after fall/SOS</text><text x="52" y="376" class="s">+8 dBm TX for urgent events</text><text x="52" y="394" class="s">Coded PHY (long range) to the hub</text><text x="52" y="412" class="s">Antenna tuned inside the enclosure</text>
+
+<rect x="380" y="110" width="290" height="160" rx="14" class="box"/><rect x="396" y="124" width="26" height="20" rx="4" class="tag"/><text x="402" y="138" class="tagt">L3</text><text x="432" y="140" class="h">Parent phone · native app</text>
+<text x="396" y="166" class="s">Android: foreground service (connectedDevice)</text><text x="396" y="184" class="s">+ CompanionDeviceManager, boot restart,</text><text x="396" y="202" class="s">battery-optimisation / autostart onboarding</text><text x="396" y="220" class="s">iOS: bluetooth-central background mode</text><text x="396" y="238" class="s">+ CoreBluetooth state restoration</text><text x="396" y="258" class="s">Works when parent is away from home</text>
+
+<rect x="380" y="298" width="290" height="160" rx="14" class="new"/><rect x="396" y="312" width="26" height="20" rx="4" class="tag"/><text x="402" y="326" class="tagt">L4</text><text x="432" y="328" class="h">LOOMCARE Home Hub</text>
+<text x="396" y="354" class="s">Mains-powered BLE → Wi-Fi bridge, no app to kill</text><text x="396" y="372" class="s">Near bedroom/bathroom; 2nd hub for large homes</text><text x="396" y="390" class="s">Optional LTE Cat-1 backup for internet outages</text><text x="396" y="408" class="s">Optional backup cell for power cuts</text><text x="396" y="426" class="s">Removes phone dependence at home</text><text x="396" y="446" class="s">(e.g. ESP32-C3/S3 class: BLE 5 long range + Wi-Fi)</text>
+
+<path d="M286 190H380" class="sig" marker-end="url(#a)"/><text x="296" y="182" class="s">BLE 1M PHY</text>
+<path d="M286 378H380" class="alt" marker-end="url(#d)"/><text x="292" y="370" class="s">BLE Coded PHY</text>
+
+<rect x="760" y="110" width="200" height="348" rx="14" class="core"/><rect x="776" y="124" width="26" height="20" rx="4" class="tag"/><text x="782" y="138" class="tagt">L5</text><text x="812" y="140" class="h">Cloud</text>
+<text x="776" y="168">Idempotent ingestion</text><text x="776" y="186" class="s">(device, event-id) dedup: done</text><text x="776" y="214">Per-gateway credentials</text><text x="776" y="232" class="s">needed for multi-gateway</text><text x="776" y="260">Gateway + pendant health</text><text x="776" y="278" class="s">last-seen per path</text>
+<rect x="776" y="298" width="26" height="20" rx="4" class="tag"/><text x="782" y="312" class="tagt">L6</text><text x="812" y="313" class="h">Supervision</text>
+<text x="776" y="340" class="s">Heartbeat every ~60 s</text><text x="776" y="358" class="s">Team sees silence at once</text><text x="776" y="376" class="s">Family "reduced protection"</text><text x="776" y="394" class="s">after a grace window</text><text x="776" y="412" class="s">Charging / not-worn states</text><text x="776" y="430" class="s">are not alarms</text>
+<path d="M670 190H760" class="sig" marker-end="url(#a)"/><path d="M670 378H760" class="alt" marker-end="url(#d)"/><text x="680" y="182" class="s">HTTPS</text><text x="684" y="370" class="s">Wi-Fi/LTE</text>
+
+<rect x="1010" y="110" width="160" height="100" rx="12" class="box"/><rect x="1024" y="122" width="26" height="20" rx="4" class="tag"/><text x="1030" y="136" class="tagt">L7</text><text x="1058" y="138" class="h">Family</text><text x="1024" y="162" class="s">Push (FCM / APNs)</text><text x="1024" y="180" class="s">In-app inbox + ack</text><text x="1024" y="198" class="s">Care Circle chain</text>
+<rect x="1010" y="228" width="160" height="100" rx="12" class="new"/><text x="1024" y="254" class="h">SMS + voice call</text><text x="1024" y="278" class="s">Fall / SOS until</text><text x="1024" y="296" class="s">acknowledged,</text><text x="1024" y="314" class="s">next contact on timeout</text>
+<rect x="1010" y="346" width="160" height="112" rx="12" class="box"/><text x="1024" y="372" class="h">Care team</text><text x="1024" y="396" class="s">Incident desk</text><text x="1024" y="414" class="s">Fleet / gateway health</text><text x="1024" y="432" class="s">Proactive outreach when</text><text x="1024" y="450" class="s">a home goes silent</text>
+<path d="M960 160H1010M960 278H1010M960 400H1010" class="sig" marker-end="url(#a)"/>
+
+<rect x="36" y="486" width="1134" height="236" rx="12" class="note"/><text x="54" y="514" class="h">What happens when something fails</text>
+<text x="54" y="542">Pendant out of Bluetooth range → still detects and alarms locally; queues events; fast-advertises so the phone or hub reconnects; event delivered on reconnect.</text>
+<text x="54" y="566">Phone off / dead / Bluetooth off / app killed → Home Hub relays; cloud shows which path is down; family told "phone gateway offline", not "emergency".</text>
+<text x="54" y="590">Home internet down → phone relays over mobile data, or hub fails over to LTE; power cut → hub backup cell and the phone keep working.</text>
+<text x="54" y="614">Both paths down → pendant keeps working locally; after the grace window the family and team are told protection is reduced so a human can call or visit.</text>
+<text x="54" y="638">Parent leaves home → phone app relays wherever the parent carries the phone; without the phone there is no remote alert until V3 cellular.</text>
+<text x="54" y="662">Fall or SOS delivered but nobody responds → push, then SMS, then voice call, then next Care Circle contact, then care team, each on a timer until acknowledged.</text>
+<text x="54" y="696" class="s">V3 (cellular pendant, per proposal) removes the gateway from the critical path. Until then, V1 must be honest: remote alerts need at least one working gateway, and the system says so.</text>
+</svg>
