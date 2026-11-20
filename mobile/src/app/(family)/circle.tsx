@@ -10,7 +10,7 @@ import { useCare } from '@/lib/useCare';
 
 const HELP: Record<Role, string> = { owner: 'Parents, phones, members and settings', caregiver: 'Reminders, contacts and check-ins', viewer: 'Sees updates and can acknowledge alerts' };
 
-export default function Circle() {
+export default function Profile() {
   const { api, signOut, setMode, server, pushStatus } = useSession();
   const { data, error, refreshing, refresh } = useCare();
   const [role, setRole] = useState<'caregiver' | 'viewer'>('caregiver');
@@ -40,7 +40,7 @@ export default function Circle() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={() => refresh(true)}>
-      <Title sub="Everyone who helps, each with the right access.">Care Circle</Title>
+      <Title sub="Your care network, permissions and this phone.">Profile & Care Circle</Title>
       {error ? <Notice tone="warn">{error}</Notice> : null}
       {data?.members.map((m) => (
         <Card key={m.id}>
@@ -55,7 +55,7 @@ export default function Circle() {
         <Card>
           <Strong>Invite someone</Strong>
           <Choice options={[{ value: 'caregiver', label: 'Caregiver' }, { value: 'viewer', label: 'Viewer' }]} value={role} onChange={setRole} />
-          <Muted>{HELP[role]}. They get alerts on their own phone.</Muted>
+          <Muted>{HELP[role]}. They get alerts on their own phone. Emergency contacts do not automatically get access to private app history.</Muted>
           <Button label="Create and share invite code" onPress={invite} busy={busy} />
         </Card>
       ) : null}

@@ -68,7 +68,8 @@ const failures = [
 export function hardwarePage() {
   const powerRows = power.map(([item, assume, lo, hi, src]) => [item, assume, `${fmt(lo)}–${fmt(hi)} µA`, `<small>${src}</small>`]);
   powerRows.push(['<strong>Total estimate</strong>', 'Excludes pilot raw-data logging (expect a further ~5–20 µA)', `<strong>${Math.round(lowTotal)}–${Math.round(highTotal)} µA</strong>`, '']);
-  return `<div class="page-heading"><div class="eyebrow">LOOMCARE · V1 hardware</div><h1>The V1 pendant, from bench to wearable.</h1><p>Product architecture, EVT parts list, power budget, connectivity strategy, and the ESP32 rig kept for software testing.</p></div>
+  return `<div class="page-heading"><div class="eyebrow">LOOMCARE ENGINEERING · DEVELOPER DOCUMENTATION</div><h1>The V1 locket, from bench to wearable.</h1><p>Product architecture, EVT parts list, power budget, connectivity strategy, and the ESP32 rig kept for software testing. The step-by-step engineering handbook lives in <code>hardware/README.md</code>.</p></div>
+<div class="notice warning"><strong>Developer-only engineering guide.</strong> This page is for people designing, assembling, programming and validating LOOMCARE hardware. It is not part of the family or care-team product experience.</div>
 <div class="notice warning"><strong>Engineering targets, not promises.</strong> Size, weight, IP rating and battery life are locked only after EVT prototypes, ingress tests and real power measurements. The pendant helps a family respond faster; it is not a certified medical device.</div>
 <div class="grid three spaced"><div class="card metric"><span>Battery target</span><strong>10–21+ days</strong><small>Needs ≤ ~0.5 mA average</small></div><div class="card metric"><span>Size / weight target</span><strong>~35 × 31 × 10 mm</strong><small>~15–22 g</small></div><div class="card metric"><span>Sealing</span><strong>IP67 → IP68</strong><small>No USB port; cradle contacts</small></div></div>
 

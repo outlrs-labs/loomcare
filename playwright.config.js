@@ -4,6 +4,6 @@ module.exports = defineConfig({
   timeout: 90000,
   workers: 1,
   use: {baseURL: 'http://127.0.0.1:8011', channel: process.env.PLAYWRIGHT_CHANNEL || undefined, headless: true, trace: 'retain-on-failure'},
-  webServer: {command: '.venv/bin/python tests/serve_browser.py', url: 'http://127.0.0.1:8011/healthz', reuseExistingServer: false, timeout: 30000},
+  webServer: {command: `${process.env.LOOMCARE_TEST_PYTHON || '.venv/bin/python'} tests/serve_browser.py`, url: 'http://127.0.0.1:8011/healthz', reuseExistingServer: false, timeout: 30000},
   reporter: 'list'
 });

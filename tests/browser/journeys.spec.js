@@ -2,12 +2,14 @@ const {test,expect}=require('@playwright/test');
 
 async function onboard(page) {
   await page.goto('/family');
+  await expect(page.locator('a[href="/hardware"]')).toHaveCount(0);
   await page.getByRole('button',{name:'Create family account',exact:true}).click();
   await page.getByLabel('Your name').fill('Ananya');
   await page.getByLabel('Email address').fill(`family-${Date.now()}@example.test`);
   await page.getByLabel('Password',{exact:true}).fill('family-test-password-123');
   await page.getByRole('button',{name:'Create my care space'}).click();
-  await expect(page.getByRole('heading',{name:'A little closer, Ananya.'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Good morning, Ananya.'})).toBeVisible();
+  await expect(page.locator('a[href="/hardware"]')).toHaveCount(0);
   await page.getByRole('button',{name:'+ Add parent',exact:true}).first().click();
   await page.getByLabel('Parent’s name',{exact:true}).fill('Mum');
   await page.getByRole('button',{name:'Add parent',exact:true}).click();
@@ -52,7 +54,7 @@ test('family, pendant, offline replay and team operations',async({page,context,b
   await expect.poll(async()=>{const state=await apiState(page);return state.events.filter(e=>e.kind==='sos').length;}).toBe(1);
   await page.bringToFront();
   await page.reload();
-  await expect(page.getByText('1 incident need attention.')).toBeVisible();
+  await expect(page.getByText('1 critical alert needs attention.')).toBeVisible();
   await page.screenshot({path:'/tmp/loomcare-family.png',fullPage:true});
   await page.getByRole('button',{name:'Acknowledge',exact:true}).click();
   await page.getByLabel('Action taken').fill('Called Mum; neighbour is checking.');
@@ -152,6 +154,24 @@ test('care circle invite, roles and team operations',async({page,context,browser
   expect(errors).toEqual([]);
 });
 
+test('Locket Lab sends real simulator events',async({page,context})=>{
+  const errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await onboard(page);
+  await page.getByRole('button',{name:'Connect pendant',exact:true}).click();
+  await page.getByRole('button',{name:'Create gateway link'}).click();
+  const opened=context.waitForEvent('page');
+  await page.locator('#modal').getByRole('link',{name:'Open Locket Lab'}).click();
+  const lab=await opened;
+  lab.on('pageerror',e=>errors.push(e.message));
+  await expect(lab.getByRole('heading',{name:'See every surface react.'})).toBeVisible();
+  await expect(lab.getByText('Cloud connected',{exact:true})).toBeVisible();
+  await lab.getByRole('button',{name:/SOS press/}).click();
+  await expect.poll(async()=>{const state=await apiState(page);return state.events.filter(e=>e.kind==='sos').length;}).toBe(1);
+  await expect(lab.getByText('Accepted by server',{exact:false})).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
 test('mobile layout and build resources',async({page})=>{
   const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
@@ -160,7 +180,9 @@ test('mobile layout and build resources',async({page})=>{
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.screenshot({path:'/tmp/loomcare-mobile.png',fullPage:true});
   await page.goto('/hardware');
-  await expect(page.getByRole('heading',{name:'The V1 pendant, from bench to wearable.'})).toBeVisible();
+  await expect(page.getByText('Developer-only engineering guide.')).toBeVisible();
+  await expect(page.getByRole('navigation',{name:'Developer navigation'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'The V1 locket, from bench to wearable.'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Solving connectivity'})).toBeVisible();
   await expect(page.locator('img.diagram')).toHaveCount(2);
   await expect.poll(()=>page.locator('.hardware-image').evaluateAll(imgs=>imgs.every(img=>img.complete && img.naturalWidth>0))).toBe(true);

@@ -56,6 +56,15 @@ Development creates a persistent random `data/session.key` with owner-only file 
 11. Add a second gateway (e.g. Home Hub) and verify both relay without duplicate incidents; remove one and confirm the other keeps working.
 12. Sign into the operator workspace in another browser/profile. Inspect customers and household detail (add a support note), fleet and gateways, inventory (admin: add and assign a unit), incidents, delivery channels, team, audit and API p50/p95.
 
+## Verification record (11 November 2026, UX baseline)
+
+- 27 backend tests passed after the Consumer App/System Dashboard UX alignment and operator `last_sync` query change.
+- Five installed-Chrome browser journeys passed, including the new gateway-backed Locket Lab SOS flow.
+- Mobile TypeScript and Expo lint passed after the five-tab Home / Activity / Alerts / Reminders / Profile structure and SDK 57 patch update.
+- Expo Doctor passed 20/21 checks. The remaining warning is the existing `react-native-background-actions` New Architecture compatibility warning; physical Android background testing remains required.
+- Static JavaScript syntax, diff whitespace checks and the shared C++ detector test passed.
+- The Locket Lab pairing page was visually checked against an isolated temporary database. It does not validate physical sensor or BLE behaviour.
+
 ## Verification record (24 September 2026, platform release)
 
 - 27 backend tests passed: the original 19 plus multi-gateway relay/dedup/revocation, tiered silence alerts, Care Circle roles and single-use invites, mobile bearer auth without CSRF, mocked Expo push with stale-token cleanup, signed webhook escalation, team roles/inventory/notes, and in-place migration of a pre-platform database. Writing these tests exposed an invite-join bug, which was fixed.

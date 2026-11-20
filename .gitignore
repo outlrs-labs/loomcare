@@ -5,6 +5,9 @@
 __pycache__/
 *.pyc
 data/
+*.db
+*.db-wal
+*.db-shm
 .pio/
 .DS_Store
 node_modules/

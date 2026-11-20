@@ -4,6 +4,14 @@ A household-first care prototype: a family/customer web app and phone app, an in
 
 **Status: implemented for supervised prototyping, not a medically validated or production-ready safety product.** The archived claims below describe the previous project and do not describe this V1 implementation.
 
+## Product and build documentation
+
+- [`docs/product/ux-guide.md`](docs/product/ux-guide.md) — approved Consumer App and System Dashboard UX language and information architecture.
+- [`docs/product/requirements.md`](docs/product/requirements.md) — prioritized, testable product requirements.
+- [`docs/product/gap-analysis.md`](docs/product/gap-analysis.md) — current capability versus the target experience.
+- [`docs/product/implementation-plan.md`](docs/product/implementation-plan.md) — staged delivery plan and acceptance gates.
+- [`hardware/README.md`](hardware/README.md) — current XIAO nRF54L15 + BMI270 assembly and validation handbook.
+
 ## Start here
 
 ```bash
@@ -27,9 +35,10 @@ Use another browser/profile for simultaneous family and team sessions. No defaul
 | --- | --- | --- |
 | Family/customer app | `/family` | Parent profiles, reminders, contacts (email + phone), check-ins, incidents, Care Circle roles and invites, gateways and silence-alert settings |
 | Parent gateway | `/gateway` | Foreground Web Bluetooth bridge or hardware-free simulator |
+| Locket Lab | `/simulator` | Real gateway-backed scenario lab showing locket, family-app and operations reactions |
 | Phone app | `mobile/` | Expo/React Native: family mode (alerts via push, check-ins, reminders, Care Circle, QR pairing) and invisible parent-phone gateway mode (native BLE, Android foreground service, offline replay) |
 | Team dashboard | `/team` | Customers and household detail, fleet and gateway health, incidents, inventory, support notes, delivery channels, team roles, audit and API timings |
-| Hardware guide | `/hardware` | Finalized prototype BOM (plain XIAO nRF54L15 + BMI270, ≤ ₹3,000), production cost target (≤ ₹2,000), block diagram, power budget, connectivity strategy, build path; ESP32 rig in a collapsible section |
+| Developer hardware guide | `/hardware` (direct URL only) | Internal engineering reference: finalized prototype BOM (plain XIAO nRF54L15 + BMI270, ≤ ₹3,000), production cost target (≤ ₹2,000), block diagram, power budget, connectivity strategy, build path; ESP32 rig in a collapsible section. It is intentionally excluded from family and team navigation. |
 | Product diagrams | `/static/architecture.svg`, `/static/connectivity.svg` | Pendant block diagram and connectivity/fallback architecture |
 | Rollout plan | `/plan` | Consumer/native app refinement, operational work and pilot acceptance gates |
 | Circuit diagram | `/static/circuit.svg` | Pin-level ESP32 software-testing rig (not the product hardware) |
@@ -38,6 +47,7 @@ Use another browser/profile for simultaneous family and team sessions. No defaul
 ## Architecture and limits
 
 - Flask + SQLite WAL + static ES-module browser apps; no frontend build required. Existing databases migrate in place on startup.
+- The database is intentionally simple: one private SQLite file at `data/care.db` locally or `/var/data/care.db` on Render. Database files are ignored by Git and must never be committed.
 - On-pendant accel-first fall detection (shared C++ detector), 15-second cancellation, 2-second SOS, eight stored IST reminders, check-ins, and a persistent 32-event queue. XIAO firmware lets two gateways connect at once.
 - Multi-gateway: each pendant can have up to four gateways (browser, parent’s phone, Home Hub), each with its own revocable credential and health. Duplicate relays create one incident.
 - Tiered silence supervision: the team sees silence at once; the family is alerted after a per-parent window (2 min–24 h, default 15 min).

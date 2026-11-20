@@ -1,5 +1,6 @@
 import sys
 import tempfile
+import logging
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -8,6 +9,7 @@ from werkzeug.security import generate_password_hash
 import time
 
 with tempfile.TemporaryDirectory(prefix='loomcare-browser-') as folder:
+    logging.getLogger('werkzeug').setLevel(logging.ERROR)
     app = create_app({'DATABASE': str(Path(folder) / 'test.db'), 'SECRET_KEY': 'browser-fixture-only-not-a-deployment-key', 'ENABLE_SMTP': False})
     db = connect_db(app)
     db.execute('INSERT INTO users(id,household_id,name,email,password_hash,role,created_at,team_role) VALUES (?,?,?,?,?,?,?,?)', (uid(), None, 'Test operator', 'team@example.test', generate_password_hash('team-test-password-123'), 'operator', time.time(), 'admin'))

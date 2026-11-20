@@ -1,0 +1,21 @@
+# Prototype build record
+
+- Serial:
+- Hardware revision:
+- Build date / builder:
+- Controller part and lot:
+- BMI270 board and address:
+- Battery maker, model, capacity, protection and lot:
+- Haptic / driver:
+- Piezo:
+- Button / LED:
+- Enclosure revision:
+- Lanyard revision:
+- Firmware commit / version:
+- BLE PIN provisioned: yes / no (do not record the PIN)
+- Initial battery voltage:
+- Polarity and pre-power inspection by:
+- Assembly deviations:
+- Photographs / evidence location:
+- Smoke-test result:
+- Disposition: bench only / wearable prototype / quarantined

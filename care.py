@@ -443,6 +443,7 @@ def create_app(config=None):
     @app.get('/family')
     @app.get('/team')
     @app.get('/gateway')
+    @app.get('/simulator')
     @app.get('/hardware')
     @app.get('/plan')
     def index():
@@ -782,6 +783,7 @@ def create_app(config=None):
             (SELECT COUNT(*) FROM devices WHERE household_id=h.id) AS devices,
             (SELECT COUNT(*) FROM devices WHERE household_id=h.id AND connected=1 AND last_seen>=?) AS online,
             (SELECT COUNT(*) FROM events WHERE household_id=h.id AND status IN ('open','escalated','missed')) AS open_incidents,
+            (SELECT MAX(last_seen) FROM devices WHERE household_id=h.id) AS last_sync,
             (SELECT MAX(received_at) FROM events WHERE household_id=h.id) AS last_event
             FROM households h ORDER BY h.created_at DESC LIMIT 500""", (now - ONLINE_WINDOW,))
         return jsonify(households=[dict(r) for r in rows])
